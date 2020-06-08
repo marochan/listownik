@@ -4,5 +4,6 @@ import java.util.List;
 
 public interface Main
 {
-	List<Integer> sum(int count, int threadCount, int firstElement, int secondElement);
+	 List<Integer> sum(int count, int threadCount, int firstElement, int secondElement);
+	
 }

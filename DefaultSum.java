@@ -2,44 +2,43 @@ package pl.edu.agh.automatedgrader.jtp2.lab1.interfaces;
 
 import java.lang.reflect.Method;
 import java.util.List;
-import java.util.Scanner;
-
-
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;;
 
 public class DefaultSum implements Sum {
 	DefaultMain main = new DefaultMain();
-	Thread t;
-	DefaultSum(){
-		t = new Thread(this);
-		t.start();
-		
+
+	DefaultSum() {
+
 	}
+
 	@Override
 	public void run() {
-		try {
-		System.out.println("im working" + " " + Thread.currentThread().getName());
+
 		int count = getHowMany();
 		List<Integer> list = getList();
-		int firstElement = list.get(list.size());
-		int secondElement = list.get(list.size());
-		Method methodall = main.getClass().getDeclaredMethod("sum", int.class, int.class, int.class, int.class);	
-		methodall.invoke(main, count, main.threadCount, firstElement, secondElement);
-		
-		
-	} catch (NoSuchMethodException e) {
-		e.printStackTrace();
-	}	catch (IllegalAccessException e) { 
-		e.printStackTrace();
-	} catch (InvocationTargetException e) {
-		e.printStackTrace();
+
+		int firstElement = list.get(list.size() - 2).intValue();
+		int secondElement = list.get(list.size() - 1).intValue();
+		int j = 2;
+		while (j < count) {
+			int adder = firstElement + secondElement;
+			list.add(adder);
+			System.out.println(list);
+			firstElement = secondElement;
+			secondElement = adder;
+			if (j == count) {
+				notify();
+			}
+			j++;
+		}
+		System.out.println(list);
+
 	}
-	}
+
 	@Override
 	public int getHowMany() {
-	
+
 		try {
 			Field[] fields = DefaultMain.class.getFields();
 			for (int i = 0; i < fields.length; i++) {
@@ -59,7 +58,7 @@ public class DefaultSum implements Sum {
 
 	@Override
 	public List<Integer> getList() {
-		
+
 		List<Integer> lista = null;
 		try {
 			Field[] fields = DefaultMain.class.getFields();

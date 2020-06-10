@@ -6,7 +6,7 @@ import java.util.List;
 import java.lang.reflect.Field;
 
 public class DefaultSum implements Sum {
-	DefaultMain dm = new DefaultMain();
+
 
 	@Override
 	public void run() {

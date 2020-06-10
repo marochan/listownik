@@ -20,7 +20,7 @@ public class DefaultMain implements Main {
 		DefaultMain dm = new DefaultMain();
 		System.out.println("how many threads");
 		Scanner sc = new Scanner(System.in);
-		threadCount = 10;
+		threadCount = 2;
 		firstElement = 0;
 		secondElement = 1;
 		list = dm.sum(count, threadCount, firstElement, secondElement);
@@ -29,15 +29,20 @@ public class DefaultMain implements Main {
 	}
 
 	@Override
-	public synchronized List<Integer> sum(int count, int threadCount, int firstElement, int secondElement) {
+	public  List<Integer> sum(int count, int threadCount, int firstElement, int secondElement) {
 		
 
-		DefaultSum[] ds = new DefaultSum[threadCount];
+		try {
 		for(int i = 0; i < threadCount; i++) {
+			DefaultSum ds = new DefaultSum();
+			Thread thread = new Thread(ds);
+			thread.start();
+			thread.join();
 			
-			new Thread(ds[i]).run();
 		}
-	
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		
 		
 		return list;

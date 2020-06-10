@@ -6,35 +6,40 @@ import java.util.List;
 import java.util.Scanner;
 
 public class DefaultMain implements Main {
-	static int firstElement = 0;
-	static int secondElement = 1;
-	static int count = 10;
-	public static List<Integer> lista = new ArrayList<Integer>();
-	public static List<Integer> list = Collections.synchronizedList(lista);
+	static volatile int firstElement;
+	static volatile int secondElement;
+	static  int count = 10;
+	public static volatile  List<Integer> lista = new ArrayList<Integer>();
+	public static volatile  List<Integer> list = Collections.synchronizedList(lista);
 	static int threadCount;
 
 	public static void main(String[] args) throws InterruptedException {
 		
-		list.add(firstElement);
-		list.add(secondElement);
+		
+		DefaultMain dm = new DefaultMain();
 		System.out.println("how many threads");
 		Scanner sc = new Scanner(System.in);
-		threadCount = sc.nextInt();
-
-		Main exa = new DefaultMain();
-		exa.sum(count, threadCount, firstElement, secondElement);
-
+		threadCount = 10;
+		firstElement = 0;
+		secondElement = 1;
+		list = dm.sum(count, threadCount, firstElement, secondElement);
+		System.out.println(list);
+		
 	}
 
 	@Override
-	public  List<Integer> sum(int count, int threadCount, int firstElement, int secondElement) {
+	public synchronized List<Integer> sum(int count, int threadCount, int firstElement, int secondElement) {
+		list.add(0);
+		list.add(1);
+		
 		DefaultSum[] ds = new DefaultSum[threadCount];
-		synchronized(list) {
-		for (int i = 0; i < DefaultMain.threadCount; i++) {
-
-			new Thread(new DefaultSum()).start();
-
+		for(int i = 0; i < threadCount; i++) {
+			
+			new Thread(ds[i]).run();
 		}
+	
+		
+		
 		return list;
 	}
-}}
+}

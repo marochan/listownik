@@ -14,7 +14,8 @@ public class DefaultMain implements Main {
 	static int threadCount;
 
 	public static void main(String[] args) throws InterruptedException {
-		
+		list.add(0);
+		list.add(1);
 		
 		DefaultMain dm = new DefaultMain();
 		System.out.println("how many threads");
@@ -29,9 +30,8 @@ public class DefaultMain implements Main {
 
 	@Override
 	public synchronized List<Integer> sum(int count, int threadCount, int firstElement, int secondElement) {
-		list.add(0);
-		list.add(1);
 		
+
 		DefaultSum[] ds = new DefaultSum[threadCount];
 		for(int i = 0; i < threadCount; i++) {
 			
